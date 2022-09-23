@@ -1,0 +1,53 @@
+---
+title: "HW1"
+format: html
+editor: visual
+---
+
+## Seattle 
+
+The Seattle dataset evaluates the housing prices in the Seattle area in the years 2014 and 2015. There are several observations taken with each house which could influence the price of each house. These include (but are not limited to) number of bedrooms, number of bathrooms, and square footage of living space.
+
+The below chart examines whether there is a relationship between house price and the square footage of the living space. Also included in the chart, is color coding the number of bedrooms to understand if there is a grouping based on the number of bedrooms (it would make sense large homes have more bedrooms).
+
+```{r}
+library(readr)
+Sea <- read_csv("~/Library/CloudStorage/OneDrive-Personal/CSU Applied Stats/STAA 566/HW1/HW1 v2/Seattle.csv")
+
+
+library(ggplot2)
+
+attach(Sea)
+
+p <- ggplot(data = Sea, aes(x = sqft_living, y = price, color = as.factor(bedrooms))) + 
+  geom_point() + 
+  ggtitle("Seattle House Price vs House Square Footage") +
+  xlab("Square Feet of Living Space") + 
+  ylab("House Price (US dollars)") +
+  theme_bw() + 
+  labs(color = "Number of Bedrooms") +
+  scale_y_continuous(trans = "log10",
+    labels = scales::dollar_format(), 
+                                  limits = c(10000,7500000))
+
+
+p
+
+
+```
+
+The box plot below is comparing home prices across number of bedrooms. There appears to be a slight increase in median house price as number of bedrooms increases, however the box plot also shows there are not many 6 and 7 bedroom houses. There are also several expensive houses that may be skewing the 4-5 bedroom houses.
+
+```{r}
+q <- ggplot(data = Sea, aes(x = as.factor(bedrooms), y = price)) +
+              geom_boxplot() +   ggtitle("Seattle House Price vs Number of Bedrooms") +
+  xlab("Number of Bedrooms") + 
+  ylab("House Price (US dollars)") +
+  theme_bw()  +
+  scale_y_continuous(trans = "log10",
+    labels = scales::dollar_format(), 
+                                  limits = c(10000,7500000))
+  
+q
+          
+```
